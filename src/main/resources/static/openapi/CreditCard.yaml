@@ -1,0 +1,108 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Credit Card API
+servers:
+  - url: http://localhost:8080
+paths:
+  /creditCards:
+    post:
+      summary: Add a Credit Card
+      operationId: addCreditCard
+      tags:
+        - CreditCard
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreditCard'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreditCard"
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '500':
+          description: Internal Server error / Technical
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    get:
+      summary: List Credit Cards
+      operationId: getCreditCards
+      tags:
+        - CreditCard
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreditCards"
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '500':
+          description: Internal Server error / Technical
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    CreditCards:
+      type: object
+      properties:
+        creditCards:
+          type: array
+          items:
+            $ref: "#/components/schemas/CreditCard"
+    CreditCard:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+        name:
+          $ref: "#/components/schemas/Name"
+        balance:
+          type: number
+          format: double
+        limit:
+          type: number
+          format: double
+        currency:
+          type: string
+          enum:
+            - GBP
+    Name:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastname:
+          type: string
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string

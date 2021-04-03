@@ -1,0 +1,9 @@
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    url: /openapi/CreditCard.yaml
+    config-url: /v3/api-docs/swagger-config
+management:
+  endpoint:
+    health:
+      show-details: always
