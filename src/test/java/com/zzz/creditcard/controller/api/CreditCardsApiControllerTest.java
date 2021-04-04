@@ -58,7 +58,8 @@ public class CreditCardsApiControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post(URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(request))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().json(request));
     }
 
     @Test
@@ -68,7 +69,7 @@ public class CreditCardsApiControllerTest {
                 "\"limit\":3000.0," +
                 "\"balance\":0.0," +
                 "\"currency\":\"GBP\"}";
-        String expectedResponse = "{\"code\":400,\"message\":\"The Credit Card number is invalid.\"}";
+        String expectedResponse = "{\"code\":400,\"message\":\"The Credit Card number 79927398 is invalid.\"}";
         mockMvc.perform(MockMvcRequestBuilders.post(URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(request))
@@ -83,7 +84,7 @@ public class CreditCardsApiControllerTest {
                 "\"balance\":500.0," +
                 "\"limit\":3000.0," +
                 "\"currency\":\"GBP\"}";
-        String expectedResponse = "{\"code\":400,\"message\":\"The Credit Card balance should be 0.\"}";
+        String expectedResponse = "{\"code\":400,\"message\":\"The Credit Card balance 500.0 should be 0.\"}";
         mockMvc.perform(MockMvcRequestBuilders.post(URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(request))
