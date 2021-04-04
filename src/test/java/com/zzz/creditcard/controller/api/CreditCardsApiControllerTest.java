@@ -50,15 +50,45 @@ public class CreditCardsApiControllerTest {
 
     @Test
     public void testAddCreditCard() throws Exception {
-        String request = "{\"id\":\"434343434\"," +
+        String request = "{\"id\":\"79927398713000\"," +
                 "\"name\":{\"firstName\":\"Susan\",\"lastname\":\"Brown\"}," +
-                "\"balance\":1000.0," +
                 "\"limit\":3000.0," +
+                "\"balance\":0.0," +
                 "\"currency\":\"GBP\"}";
         mockMvc.perform(MockMvcRequestBuilders.post(URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(request))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testAddCreditCardInvalidCardNumberError() throws Exception {
+        String request = "{\"id\":\"79927398\"," +
+                "\"name\":{\"firstName\":\"Susan\",\"lastname\":\"Brown\"}," +
+                "\"limit\":3000.0," +
+                "\"balance\":0.0," +
+                "\"currency\":\"GBP\"}";
+        String expectedResponse = "{\"code\":400,\"message\":\"The Credit Card number is invalid.\"}";
+        mockMvc.perform(MockMvcRequestBuilders.post(URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(request))
+                .andExpect(status().is4xxClientError())
+                .andExpect(content().json(expectedResponse));
+    }
+
+    @Test
+    public void testAddCreditCardBalanceError() throws Exception {
+        String request = "{\"id\":\"79927398713000\"," +
+                "\"name\":{\"firstName\":\"Susan\",\"lastname\":\"Brown\"}," +
+                "\"balance\":500.0," +
+                "\"limit\":3000.0," +
+                "\"currency\":\"GBP\"}";
+        String expectedResponse = "{\"code\":400,\"message\":\"The Credit Card balance should be 0.\"}";
+        mockMvc.perform(MockMvcRequestBuilders.post(URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(request))
+                .andExpect(status().is4xxClientError())
+                .andExpect(content().json(expectedResponse));
     }
 
     @TestConfiguration

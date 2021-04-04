@@ -32,15 +32,20 @@ public class CreditCardsApiDelegateImpl implements CreditCardsApiDelegate {
      */
     public ResponseEntity<CreditCard> addCreditCard(CreditCard creditCard) {
         LOGGER.info("Received request to add credit card id: " + creditCard.getId());
-        if (CreditCardUtils.isValidCreditCard(creditCard.getId())) {
-            LOGGER.info("Credit card added, id: " + creditCard.getId());
-            creditCardCollection.addCreditCard(creditCard);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
+        if (!CreditCardUtils.isValidCreditCard(creditCard.getId())) {
             LOGGER.info("The Credit Card number is invalid." + creditCard.getId());
             return new ResponseEntity(new Error().code(HttpStatus.BAD_REQUEST.value())
                     .message("The Credit Card number is invalid."),
                     HttpStatus.BAD_REQUEST);
+        } else if (creditCard.getBalance() != null && creditCard.getBalance() != 0.0) {
+            LOGGER.info("The Credit Card balance is not zero." + creditCard.getId());
+            return new ResponseEntity(new Error().code(HttpStatus.BAD_REQUEST.value())
+                    .message("The Credit Card balance should be 0."),
+                    HttpStatus.BAD_REQUEST);
+        } else {
+            LOGGER.info("Credit card added, id: " + creditCard.getId());
+            creditCardCollection.addCreditCard(creditCard);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
 
     }
