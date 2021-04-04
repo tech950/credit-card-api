@@ -3,6 +3,7 @@
 This project uses openapi-generator-maven-plugin which will automatically create the model and controller classes.
 
 The generated source code is available at credit-card-api\target\generated-sources\openapi\src\main\java\com\zzz folder.
+
 To run the Spring Boot Application
 ```
 ./mvnw clean package
@@ -13,10 +14,14 @@ OR
 ./mvnw clean package
 ./mvnw spring-boot:run
 ```
-Use swagger-ui to view Transaction API documentation
+Login to the [application](http://localhost:8080) using 
+</br>User: user
+</br>Password: password
+
+Use swagger-ui to view Credit Card API documentation
 http://localhost:8080/swagger-ui.html
 
-Openapi 3.0 supports servers dropdown in swagger-ui. This can be used to test the transaction API.
+Openapi 3.0 supports servers dropdown in swagger-ui. This can be used to test the Credit Card API.
 
 View Health checks at
 http://localhost:8080/actuator/health

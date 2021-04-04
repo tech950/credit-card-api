@@ -1,4 +1,4 @@
-package com.zzz.creditcard.config;
+package com.zzz.creditcard.controller;
 
 import com.zzz.creditcard.db.ICreditCardCollection;
 import com.zzz.creditcard.db.InMemoryCreditCardCollection;
