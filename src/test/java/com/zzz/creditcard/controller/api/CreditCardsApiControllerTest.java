@@ -2,9 +2,8 @@ package com.zzz.creditcard.controller.api;
 
 import com.zzz.creditcard.api.CreditCardsApiController;
 import com.zzz.creditcard.api.CreditCardsApiDelegate;
-import com.zzz.creditcard.db.ICreditCardCollection;
-import com.zzz.creditcard.model.CreditCard;
-import com.zzz.creditcard.model.Name;
+import com.zzz.creditcard.db.CreditCard;
+import com.zzz.creditcard.db.ICreditCardRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -33,15 +32,14 @@ public class CreditCardsApiControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    ICreditCardCollection creditCardCollection;
+    ICreditCardRepository creditCardRepository;
 
     @Test
     public void testGetCreditCards() throws Exception {
-        CreditCard card = new CreditCard().id("8889999").balance(100.00).limit(1000.00)
-                .currency(CreditCard.CurrencyEnum.GBP)
-                .name(new Name().firstName("Hello").lastname("World"));
-        when(creditCardCollection.getCreditCards()).thenReturn(Collections.singletonList(card));
-        String expectedResponse = "{\"creditCards\":[{\"id\":\"8889999\"," +
+        CreditCard card = new CreditCard("79927398713000", "Hello",
+                "World", 100.00, 1000.00, "GBP");
+        when(creditCardRepository.findAll()).thenReturn(Collections.singletonList(card));
+        String expectedResponse = "{\"creditCards\":[{\"id\":\"79927398713000\"," +
                 "\"name\":{\"firstName\":\"Hello\",\"lastname\":\"World\"}," +
                 "\"balance\":100.0,\"limit\":1000.0,\"currency\":\"GBP\"}]}";
         mockMvc.perform(MockMvcRequestBuilders.get(URL)

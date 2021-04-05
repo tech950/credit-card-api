@@ -22,6 +22,7 @@ Use swagger-ui to view Credit Card API documentation
 http://localhost:8080/swagger-ui.html
 
 Openapi 3.0 supports servers dropdown in swagger-ui. This can be used to test the Credit Card API.
+Sample Credit card numbers for testing - 371110201010004, 799273987130000
 
 View Health checks at
 http://localhost:8080/actuator/health

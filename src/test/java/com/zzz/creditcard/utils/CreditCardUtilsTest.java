@@ -7,7 +7,7 @@ public class CreditCardUtilsTest {
 
     @Test
     public void testValidCreditCard() {
-        Assertions.assertTrue(CreditCardUtils.isValidCreditCard("799273987130505"));
+        Assertions.assertTrue(CreditCardUtils.isValidCreditCard("371110201010004"));
     }
 
     @Test

@@ -2,10 +2,11 @@ package com.zzz.creditcard.controller.api;
 
 import com.zzz.creditcard.api.CreditCardsApi;
 import com.zzz.creditcard.api.CreditCardsApiDelegate;
-import com.zzz.creditcard.db.ICreditCardCollection;
+import com.zzz.creditcard.db.ICreditCardRepository;
 import com.zzz.creditcard.model.CreditCard;
 import com.zzz.creditcard.model.CreditCards;
 import com.zzz.creditcard.model.Error;
+import com.zzz.creditcard.model.Name;
 import com.zzz.creditcard.utils.CreditCardUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,13 +15,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 @Service
 public class CreditCardsApiDelegateImpl implements CreditCardsApiDelegate {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CreditCardsApiDelegateImpl.class);
 
     @Autowired
-    private ICreditCardCollection creditCardCollection;
+    private ICreditCardRepository creditCardRepository;
 
     /**
      * POST /creditCards : Add a Credit Card
@@ -46,7 +51,9 @@ public class CreditCardsApiDelegateImpl implements CreditCardsApiDelegate {
                     HttpStatus.BAD_REQUEST);
         } else {
             LOGGER.info("Credit card added, id: " + creditCard.getId());
-            creditCardCollection.addCreditCard(creditCard);
+            creditCardRepository.save(new com.zzz.creditcard.db.CreditCard(creditCard.getId(),
+                    creditCard.getName().getFirstName(), creditCard.getName().getLastname(),
+                    creditCard.getBalance(), creditCard.getLimit(), creditCard.getCurrency().getValue()));
             return new ResponseEntity<>(creditCard, HttpStatus.OK);
         }
 
@@ -61,7 +68,13 @@ public class CreditCardsApiDelegateImpl implements CreditCardsApiDelegate {
      */
     public ResponseEntity<CreditCards> getCreditCards() {
         LOGGER.info("Retrieve the list of Credit cards ");
-        return new ResponseEntity(new CreditCards().creditCards(creditCardCollection.getCreditCards()),
+        List cards = StreamSupport.stream(creditCardRepository.findAll().spliterator(), false)
+                .map(x -> new CreditCard().id(x.getId())
+                        .name(new Name().firstName(x.getFirstName()).lastname(x.getLastName()))
+                        .balance(x.getBalance()).limit(x.getMaxLimit())
+                        .currency(CreditCard.CurrencyEnum.fromValue(x.getCurrency())))
+                .collect(Collectors.toList());
+        return new ResponseEntity(new CreditCards().creditCards(cards),
                 HttpStatus.OK);
     }
 }
