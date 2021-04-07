@@ -75,7 +75,12 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>java-hamcrest</artifactId>
+			<version>2.0.0.0</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -94,8 +99,8 @@
 								${project.basedir}/src/main/resources/static/openapi/CreditCard.yaml
 							</inputSpec>
 							<generatorName>spring</generatorName>
-							<apiPackage>com.zzz.creditcard.api</apiPackage>
-							<modelPackage>com.zzz.creditcard.model</modelPackage>
+							<apiPackage>com.zzz.banking.creditcard.api</apiPackage>
+							<modelPackage>com.zzz.banking.creditcard.model</modelPackage>
 							<configOptions>
 								<delegatePattern>true</delegatePattern>
 							</configOptions>
@@ -116,8 +121,8 @@
 				<version>0.8.5</version>
 				<configuration>
 					<excludes>
-						<exclude>com/zzz/creditcard/api/**/*</exclude>
-						<exclude>com/zzz/creditcard/model/**/*</exclude>
+						<exclude>com/zzz/banking/creditcard/api/**/*</exclude>
+						<exclude>com/zzz/banking/creditcard/model/**/*</exclude>
 						<exclude>org/openapitools/**/*</exclude>
 					</excludes>
 				</configuration>

@@ -26,16 +26,8 @@ paths:
                 $ref: "#/components/schemas/CreditCard"
         '400':
           description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
         '500':
           description: Internal Server error / Technical
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
     get:
       summary: List Credit Cards
       operationId: getCreditCards
@@ -50,16 +42,8 @@ paths:
                 $ref: "#/components/schemas/CreditCards"
         '400':
           description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
         '500':
           description: Internal Server error / Technical
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
 components:
   schemas:
     CreditCards:
@@ -94,15 +78,4 @@ components:
         firstName:
           type: string
         lastname:
-          type: string
-    Error:
-      type: object
-      required:
-        - code
-        - message
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
           type: string

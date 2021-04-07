@@ -16,9 +16,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Collections;
 
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WithMockUser
 @WebMvcTest(value = CreditCardsApiController.class)
@@ -67,12 +67,12 @@ public class CreditCardsApiControllerTest {
                 "\"limit\":3000.0," +
                 "\"balance\":0.0," +
                 "\"currency\":\"GBP\"}";
-        String expectedResponse = "{\"code\":400,\"message\":\"The Credit Card number 79927398 is invalid.\"}";
+        String expectedResponse = "The Credit Card number 79927398 is invalid.";
         mockMvc.perform(MockMvcRequestBuilders.post(URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(request))
                 .andExpect(status().is4xxClientError())
-                .andExpect(content().json(expectedResponse));
+                .andExpect(jsonPath("$.message", is(expectedResponse)));
     }
 
     @Test
@@ -82,12 +82,12 @@ public class CreditCardsApiControllerTest {
                 "\"balance\":500.0," +
                 "\"limit\":3000.0," +
                 "\"currency\":\"GBP\"}";
-        String expectedResponse = "{\"code\":400,\"message\":\"The Credit Card balance 500.0 should be 0.\"}";
+        String expectedResponse = "The Credit Card balance should be 0.";
         mockMvc.perform(MockMvcRequestBuilders.post(URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(request))
                 .andExpect(status().is4xxClientError())
-                .andExpect(content().json(expectedResponse));
+                .andExpect(jsonPath("$.message", is(expectedResponse)));
     }
 
     @TestConfiguration

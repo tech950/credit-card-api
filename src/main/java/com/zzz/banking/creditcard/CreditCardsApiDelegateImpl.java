@@ -1,10 +1,11 @@
 package com.zzz.banking.creditcard;
 
 import com.zzz.banking.creditcard.api.CreditCardsApi;
-import com.zzz.banking.creditcard.model.CreditCards;
-import com.zzz.banking.creditcard.model.Error;
-import com.zzz.banking.creditcard.model.Name;
 import com.zzz.banking.creditcard.api.CreditCardsApiDelegate;
+import com.zzz.banking.creditcard.model.CreditCards;
+import com.zzz.banking.creditcard.model.Name;
+import com.zzz.banking.exception.InvalidBalanceException;
+import com.zzz.banking.exception.InvalidCardNumberException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,17 +36,9 @@ public class CreditCardsApiDelegateImpl implements CreditCardsApiDelegate {
     public ResponseEntity<com.zzz.banking.creditcard.model.CreditCard> addCreditCard(com.zzz.banking.creditcard.model.CreditCard creditCard) {
         LOGGER.info("Received request to add credit card id: " + creditCard.getId());
         if (!CreditCardUtils.isValidCreditCard(creditCard.getId())) {
-            String message = String.format("The Credit Card number %s is invalid.", creditCard.getId());
-            LOGGER.info(message);
-            return new ResponseEntity(new Error().code(HttpStatus.BAD_REQUEST.value())
-                    .message(message),
-                    HttpStatus.BAD_REQUEST);
+            throw new InvalidCardNumberException(creditCard.getId());
         } else if (creditCard.getBalance() != null && creditCard.getBalance() != 0.0) {
-            String message = String.format("The Credit Card balance %s should be 0.", creditCard.getBalance());
-            LOGGER.info(message);
-            return new ResponseEntity(new Error().code(HttpStatus.BAD_REQUEST.value())
-                    .message(message),
-                    HttpStatus.BAD_REQUEST);
+            throw new InvalidBalanceException();
         } else {
             LOGGER.info("Credit card added, id: " + creditCard.getId());
             creditCardRepository.save(new com.zzz.banking.creditcard.CreditCard(creditCard.getId(),
@@ -66,7 +59,7 @@ public class CreditCardsApiDelegateImpl implements CreditCardsApiDelegate {
      */
     public ResponseEntity<CreditCards> getCreditCards() {
         LOGGER.info("Retrieve the list of Credit cards ");
-        List cards = StreamSupport.stream(creditCardRepository.findAll().spliterator(), false)
+        List<com.zzz.banking.creditcard.model.CreditCard> cards = StreamSupport.stream(creditCardRepository.findAll().spliterator(), false)
                 .map(x -> new com.zzz.banking.creditcard.model.CreditCard().id(x.getId())
                         .name(new Name().firstName(x.getFirstName()).lastname(x.getLastName()))
                         .balance(x.getBalance()).limit(x.getMaxLimit())
