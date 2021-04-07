@@ -107,7 +107,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<mainClass>com.zzz.creditcard.CreditCardApiApplication</mainClass>
+					<mainClass>com.zzz.banking.CreditCardApiApplication</mainClass>
 				</configuration>
 			</plugin>
 			<plugin>

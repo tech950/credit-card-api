@@ -1,4 +1,4 @@
-package com.zzz.creditcard.utils;
+package com.zzz.banking.creditcard;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

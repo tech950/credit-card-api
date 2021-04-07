@@ -1,13 +1,10 @@
-package com.zzz.creditcard.controller.api;
+package com.zzz.banking.creditcard;
 
-import com.zzz.creditcard.api.CreditCardsApi;
-import com.zzz.creditcard.api.CreditCardsApiDelegate;
-import com.zzz.creditcard.db.ICreditCardRepository;
-import com.zzz.creditcard.model.CreditCard;
-import com.zzz.creditcard.model.CreditCards;
-import com.zzz.creditcard.model.Error;
-import com.zzz.creditcard.model.Name;
-import com.zzz.creditcard.utils.CreditCardUtils;
+import com.zzz.banking.creditcard.api.CreditCardsApi;
+import com.zzz.banking.creditcard.model.CreditCards;
+import com.zzz.banking.creditcard.model.Error;
+import com.zzz.banking.creditcard.model.Name;
+import com.zzz.banking.creditcard.api.CreditCardsApiDelegate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +32,7 @@ public class CreditCardsApiDelegateImpl implements CreditCardsApiDelegate {
      * Technical (status code 500)
      * @see CreditCardsApi#addCreditCard
      */
-    public ResponseEntity<CreditCard> addCreditCard(CreditCard creditCard) {
+    public ResponseEntity<com.zzz.banking.creditcard.model.CreditCard> addCreditCard(com.zzz.banking.creditcard.model.CreditCard creditCard) {
         LOGGER.info("Received request to add credit card id: " + creditCard.getId());
         if (!CreditCardUtils.isValidCreditCard(creditCard.getId())) {
             String message = String.format("The Credit Card number %s is invalid.", creditCard.getId());
@@ -51,10 +48,11 @@ public class CreditCardsApiDelegateImpl implements CreditCardsApiDelegate {
                     HttpStatus.BAD_REQUEST);
         } else {
             LOGGER.info("Credit card added, id: " + creditCard.getId());
-            creditCardRepository.save(new com.zzz.creditcard.db.CreditCard(creditCard.getId(),
+            creditCardRepository.save(new com.zzz.banking.creditcard.CreditCard(creditCard.getId(),
                     creditCard.getName().getFirstName(), creditCard.getName().getLastname(),
                     creditCard.getBalance(), creditCard.getLimit(), creditCard.getCurrency().getValue()));
-            return new ResponseEntity<>(creditCard, HttpStatus.OK);
+            return new ResponseEntity<>(creditCard, HttpStatus.CREATED);
+
         }
 
     }
@@ -69,10 +67,10 @@ public class CreditCardsApiDelegateImpl implements CreditCardsApiDelegate {
     public ResponseEntity<CreditCards> getCreditCards() {
         LOGGER.info("Retrieve the list of Credit cards ");
         List cards = StreamSupport.stream(creditCardRepository.findAll().spliterator(), false)
-                .map(x -> new CreditCard().id(x.getId())
+                .map(x -> new com.zzz.banking.creditcard.model.CreditCard().id(x.getId())
                         .name(new Name().firstName(x.getFirstName()).lastname(x.getLastName()))
                         .balance(x.getBalance()).limit(x.getMaxLimit())
-                        .currency(CreditCard.CurrencyEnum.fromValue(x.getCurrency())))
+                        .currency(com.zzz.banking.creditcard.model.CreditCard.CurrencyEnum.fromValue(x.getCurrency())))
                 .collect(Collectors.toList());
         return new ResponseEntity(new CreditCards().creditCards(cards),
                 HttpStatus.OK);

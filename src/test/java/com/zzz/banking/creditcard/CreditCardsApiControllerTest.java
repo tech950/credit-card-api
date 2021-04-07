@@ -1,9 +1,7 @@
-package com.zzz.creditcard.controller.api;
+package com.zzz.banking.creditcard;
 
-import com.zzz.creditcard.api.CreditCardsApiController;
-import com.zzz.creditcard.api.CreditCardsApiDelegate;
-import com.zzz.creditcard.db.CreditCard;
-import com.zzz.creditcard.db.ICreditCardRepository;
+import com.zzz.banking.creditcard.api.CreditCardsApiController;
+import com.zzz.banking.creditcard.api.CreditCardsApiDelegate;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -58,7 +56,7 @@ public class CreditCardsApiControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post(URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(request))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().json(request));
     }
 

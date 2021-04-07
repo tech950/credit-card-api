@@ -1,4 +1,4 @@
-package com.zzz.creditcard.db;
+package com.zzz.banking.creditcard;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

@@ -1,4 +1,4 @@
-package com.zzz.creditcard.db;
+package com.zzz.banking.creditcard;
 
 import org.springframework.data.repository.CrudRepository;
 

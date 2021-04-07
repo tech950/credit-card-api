@@ -1,4 +1,4 @@
-package com.zzz.creditcard.utils;
+package com.zzz.banking.creditcard;
 
 import java.util.regex.Pattern;
 

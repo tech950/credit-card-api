@@ -1,4 +1,4 @@
-package com.zzz.creditcard.security;
+package com.zzz.banking.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
