@@ -34,10 +34,10 @@ public class CreditCardsApiControllerTest {
 
     @Test
     public void testGetCreditCards() throws Exception {
-        CreditCard card = new CreditCard("79927398713000", "Hello",
+        CreditCardDO card = new CreditCardDO("79927398713000", "Hello",
                 "World", 100.00, 1000.00, "GBP");
         when(creditCardRepository.findAll()).thenReturn(Collections.singletonList(card));
-        String expectedResponse = "{\"creditCards\":[{\"id\":\"79927398713000\"," +
+        String expectedResponse = "{\"creditCards\":[{\"cardNumber\":\"79927398713000\"," +
                 "\"name\":{\"firstName\":\"Hello\",\"lastname\":\"World\"}," +
                 "\"balance\":100.0,\"limit\":1000.0,\"currency\":\"GBP\"}]}";
         mockMvc.perform(MockMvcRequestBuilders.get(URL)
@@ -48,7 +48,7 @@ public class CreditCardsApiControllerTest {
 
     @Test
     public void testAddCreditCard() throws Exception {
-        String request = "{\"id\":\"79927398713000\"," +
+        String request = "{\"cardNumber\":\"79927398713000\"," +
                 "\"name\":{\"firstName\":\"Susan\",\"lastname\":\"Brown\"}," +
                 "\"limit\":3000.0," +
                 "\"balance\":0.0," +
@@ -62,7 +62,7 @@ public class CreditCardsApiControllerTest {
 
     @Test
     public void testAddCreditCardInvalidCardNumberError() throws Exception {
-        String request = "{\"id\":\"79927398\"," +
+        String request = "{\"cardNumber\":\"79927398\"," +
                 "\"name\":{\"firstName\":\"Susan\",\"lastname\":\"Brown\"}," +
                 "\"limit\":3000.0," +
                 "\"balance\":0.0," +
@@ -77,7 +77,7 @@ public class CreditCardsApiControllerTest {
 
     @Test
     public void testAddCreditCardBalanceError() throws Exception {
-        String request = "{\"id\":\"79927398713000\"," +
+        String request = "{\"cardNumber\":\"79927398713000\"," +
                 "\"name\":{\"firstName\":\"Susan\",\"lastname\":\"Brown\"}," +
                 "\"balance\":500.0," +
                 "\"limit\":3000.0," +

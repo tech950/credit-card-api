@@ -56,9 +56,9 @@ components:
     CreditCard:
       type: object
       required:
-        - id
+        - cardNumber
       properties:
-        id:
+        cardNumber:
           type: string
         name:
           $ref: "#/components/schemas/Name"
