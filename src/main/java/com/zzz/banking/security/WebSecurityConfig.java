@@ -26,6 +26,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .permitAll();
+        // To fix the /h2-console display
+        http.headers().frameOptions().sameOrigin();
     }
 
     @Bean

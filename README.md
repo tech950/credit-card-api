@@ -27,6 +27,12 @@ Sample Credit card numbers for testing - 371110201010004, 799273987130000
 View Health checks at
 http://localhost:8080/actuator/health
 
+View HAL explorer at
+http://localhost:8080/explorer/index.html
+
+Explore H2 db at
+http://localhost:8080/h2-console
+
 Jacoco Code coverage is available at target\site\jacoco\index.html
 
 #Assumptions
